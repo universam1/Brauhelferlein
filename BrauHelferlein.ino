@@ -10,7 +10,7 @@
 
 const char* APssid = "Brauhaus";
 const char* STAssid = "uni_5";
-const char* STApassword = "72257225";
+const char* STApassword = "xxxxxx";
 
 #define ONE_WIRE_BUS 12  // DS18B20 on ESP pin12
 #define MISCHERPORT 2
