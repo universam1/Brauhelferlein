@@ -30,10 +30,10 @@ Temperatur PID Regelung auf zehntel Grad genau
 - Arduino 1.6.x
 - add [ESP8266 Arduino](https://github.com/esp8266/Arduino)
 - Install libraries
-  - <OneWire.h>
-  - <DallasTemperature.h>
-  - NewLiquidCrystal <LiquidCrystal_I2C.h> https://bitbucket.org/fmalpartida/new-liquidcrystal/wiki/Home
-  - <PID_v1.h>
-  - <ArduinoJson.h>
+  - OneWire.h
+  - DallasTemperature.h
+  - NewLiquidCrystal https://bitbucket.org/fmalpartida/new-liquidcrystal/wiki/Home
+  - PID_v1.h
+  - ArduinoJson.h
 
 Enjoy your beer! :)
