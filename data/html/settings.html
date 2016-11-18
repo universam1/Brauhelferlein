@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html><head><title>Settings</title>
+</head><body>
+<h1>PID settings</h1>
+Output: %-7.2f<br>
+<form action='/settings' method='post' target='_self'>
+kP: <input type='text' name='Kp' value="%.0f" /><br>
+kI: <input type='text' name='Ki' value="%.0f" /><br>
+kD: <input type='text' name='Kd' value="%.0f" /><br>
+<input type='submit' value='Apply'></form>
+</body></html>  
