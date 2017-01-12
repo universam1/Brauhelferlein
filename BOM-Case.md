@@ -17,3 +17,8 @@
 - Motorconnection: [Mini XLR Plug male](http://www.lichtundtonversand.de/Steckverbinder-Adapter/XLR-Steckverbinder/XLR-Stecker-3-polig-male-schwarz-Kennring-schwarz.html)
 - Sensorconnection: [XLR Jack male](http://www.lichtundtonversand.de/Steckverbinder-Adapter/XLR-Steckverbinder/XLR-Einbaubuchse-3-polig-male-silber.html)
 - Sensorconnection: [XLR Plug female](http://www.lichtundtonversand.de/Steckverbinder-Adapter/XLR-Steckverbinder/XLR-Stecker-3-polig-female-schwarz-Kennring-schwarz.html)
+
+##MISC
+- terminal strips
+- mains cable
+- some m3 screws with nuts
