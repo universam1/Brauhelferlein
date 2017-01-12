@@ -5,12 +5,12 @@
 - [Wemos D1 Mini](http://www.ebay.de/itm/272435177267)
 - [I2C Display](http://www.ebay.de/itm/272451600583)
 - [DS18B20-Sensor](http://www.ebay.de/itm/272453930630)
-- [SSR inkl. Kühlkörper](http://www.ebay.de/itm/172371059021)
+- [SSR incl. heatsink](http://www.ebay.de/itm/172371059021)
 - [Power Regulator](http://www.ebay.de/itm/272371025606)
 - [Motorcontroller](http://www.ebay.de/itm/401186167239)
 
 ##Connectors
-- AC in: [Mounting socket](http://www.lichtundtonversand.de/index.php?cl=details&cnid=c6d49425f2e5652b2.10786974&anid=a8341ff928e486b75.74798722&listtype=list&&sid=2cc820243908881268a1c2d6a009bd78)
+- AC in: [Mounting socket](http://www.lichtundtonversand.de/index.php?cl=details&cnid=c6d49425f2e5652b2.10786974&anid=a8341ff928e486b75.74798722&listtype=list&&sid=2cc820243908881268a1c2d6a009bd78), or better the [16A version](https://www.conrad.de/de/kaltgeraete-steckverbinder-c20-stecker-einbau-vertikal-gesamtpolzahl-2-pe-16-a-schwarz-1-st-717547.html)
 - Cooker out: [IEC socket](http://www.lichtundtonversand.de/Steckverbinder-Adapter/Schutzkontakt-230V-Steckverbinder/Einbausteckdose-ohne-Deckel.html)
 - ***Cheat*** for using motor-wallwart inside the case: [Coupling](http://www.lichtundtonversand.de/Steckverbinder-Adapter/Schutzkontakt-230V-Steckverbinder/Schutzkontaktkupplung-Kunststoff-schwarz.html)
 - Motorconnection: [XLR Jack female](http://www.lichtundtonversand.de/Steckverbinder-Adapter/XLR-Steckverbinder/XLR-Einbaubuchse-3-polig-female-silber.html)
