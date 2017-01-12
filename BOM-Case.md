@@ -11,7 +11,7 @@
 
 ##Connectors
 - AC in: [Mounting socket](http://www.lichtundtonversand.de/index.php?cl=details&cnid=c6d49425f2e5652b2.10786974&anid=a8341ff928e486b75.74798722&listtype=list&&sid=2cc820243908881268a1c2d6a009bd78), or better the [16A version](https://www.conrad.de/de/kaltgeraete-steckverbinder-c20-stecker-einbau-vertikal-gesamtpolzahl-2-pe-16-a-schwarz-1-st-717547.html)
-- Cooker out: [IEC socket](http://www.lichtundtonversand.de/Steckverbinder-Adapter/Schutzkontakt-230V-Steckverbinder/Einbausteckdose-ohne-Deckel.html)
+- Cooker out: [IEC socket](http://www.lichtundtonversand.de/Steckverbinder-Adapter/Schutzkontakt-230V-Steckverbinder/Klappdeckel-Einbausteckdose-sw-230V-16A.html)
 - ***Cheat*** for using motor-wallwart inside the case: [Coupling](http://www.lichtundtonversand.de/Steckverbinder-Adapter/Schutzkontakt-230V-Steckverbinder/Schutzkontaktkupplung-Kunststoff-schwarz.html)
 - Motorconnection: [XLR Jack female](http://www.lichtundtonversand.de/Steckverbinder-Adapter/XLR-Steckverbinder/XLR-Einbaubuchse-3-polig-female-silber.html)
 - Motorconnection: [Mini XLR Plug male](http://www.lichtundtonversand.de/Steckverbinder-Adapter/XLR-Steckverbinder/XLR-Stecker-3-polig-male-schwarz-Kennring-schwarz.html)
