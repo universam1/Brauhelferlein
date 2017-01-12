@@ -10,8 +10,8 @@
 - [Motorcontroller](http://www.ebay.de/itm/401186167239)
 
 ##Connectors
-- AC in: [Mounting socket](http://www.lichtundtonversand.de/Steckverbinder-Adapter/Schutzkontakt-230V-Steckverbinder/Einbausteckdose-ohne-Deckel.html)
-- Cooker out: [IEC socket](http://www.lichtundtonversand.de/index.php?cl=details&cnid=c6d49425f2e5652b2.10786974&anid=a8341ff928e486b75.74798722&listtype=list&&sid=2cc820243908881268a1c2d6a009bd78)
+- AC in: [Mounting socket](http://www.lichtundtonversand.de/index.php?cl=details&cnid=c6d49425f2e5652b2.10786974&anid=a8341ff928e486b75.74798722&listtype=list&&sid=2cc820243908881268a1c2d6a009bd78)
+- Cooker out: [IEC socket](http://www.lichtundtonversand.de/Steckverbinder-Adapter/Schutzkontakt-230V-Steckverbinder/Einbausteckdose-ohne-Deckel.html)
 - ***Cheat*** for using motor-wallwart inside the case: [Coupling](http://www.lichtundtonversand.de/Steckverbinder-Adapter/Schutzkontakt-230V-Steckverbinder/Schutzkontaktkupplung-Kunststoff-schwarz.html)
 - Motorconnection: [XLR Jack female](http://www.lichtundtonversand.de/Steckverbinder-Adapter/XLR-Steckverbinder/XLR-Einbaubuchse-3-polig-female-silber.html)
 - Motorconnection: [Mini XLR Plug male](http://www.lichtundtonversand.de/Steckverbinder-Adapter/XLR-Steckverbinder/XLR-Stecker-3-polig-male-schwarz-Kennring-schwarz.html)
