@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Braustube</title>
+<link rel="stylesheet" href='/style/material.icons.css'>
+<link rel='stylesheet' href='/style/material.light_blue-amber.min.css'>
+<script defer src='/js/material.min.js'></script>
+<script type='text/javascript' src='/js/charts.loader.js'></script>
+<script type="text/javascript">
+var chart,gchart, allchart, data, gdata, j, alldata, iv = 1;
+
+function enEvents() {
+if (!!window.EventSource) {
+var source = new EventSource("/events");
+source.addEventListener("message", function(e) {
+j = JSON.parse(e.data);
+document.getElementById("timer").innerHTML = j.timer;
+gdata.setValue(0, 1, j.temp.toFixed(2));
+alldata.setValue(0, 1, j.sollT.toFixed(2));
+alldata.setValue(1, 1, j.load);
+data.addRow([new Date(), j.temp, j.sollT]);
+while (data.getNumberOfRows() > 1000) data.removeRow(0);
+chart.draw(data, {width: 800,height: 400,vAxis: {scaleType: 'allmaximized',minorGridlines: {count: 5}}});
+gchart.draw(gdata, {width: 300,height: 300,min: 25,max: 100,greenFrom: 63,greenTo: 78,minorTicks: 5});
+allchart.draw(alldata, {width: 500,height: 200,minorTicks: 5});}, false);}}
+
+function send() {
+var f = document.getElementById("myform"),
+formData = new FormData(f),
+xhr = new XMLHttpRequest();
+xhr.open("POST", "/");
+xhr.send(formData);
+};
+
+window.addEventListener ('submit', function (e) {
+e.preventDefault();
+send();
+return false;})
+
+function chartInit() {
+chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+gchart = new google.visualization.Gauge(document.getElementById('gchart_big'));
+allchart = new google.visualization.Gauge(document.getElementById('gchart_rest'));
+
+data = new google.visualization.DataTable();
+data.addColumn('datetime', 'Date');
+data.addColumn('number', 'Temp');
+data.addColumn('number', 'Soll');
+
+gdata = google.visualization.arrayToDataTable([['Label', 'Value'],['Temp', 80]]);
+alldata = google.visualization.arrayToDataTable([['Label', 'Value'],['Soll', 80],['Power', 30]]);
+
+var an = document.getElementById('sliderAn');
+an.oninput = function() {document.getElementById("MAan").innerHTML = this.value};
+
+var aus = document.getElementById('sliderAus');
+aus.oninput = function() {document.getElementById("MAaus").innerHTML = this.value};
+
+var ts = document.getElementById('tsoll')
+ts.oninput = function() {document.getElementById("soll").value = this.value}
+
+var pw = document.getElementById('sliderMpw')
+pw.oninput = function() {document.getElementById("Mpw").innerHTML = this.value}
+
+var inputs = document.getElementsByClassName("mdl-slider");
+for (var i = 0; i < inputs.length; i++) inputs[i].onchange = send;
+enEvents();
+}
+google.charts.load('current', {'packages': ['corechart', 'gauge']});
+google.charts.setOnLoadCallback(chartInit);
+
+</script></head><body>
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+<header class="mdl-layout__header">
+<div class="mdl-layout__header-row">
+<span class="mdl-layout-title">Braustube</span>
+<div class="mdl-layout-spacer"></div>
+<nav class="mdl-navigation">
+<a class="mdl-navigation__link" href="/settings">Einstellungen</a>
+<a class="mdl-navigation__link" href="/update">Firmware</a></nav></div></header>
+<div class="mdl-layout__drawer">
+<span class="mdl-layout-title">Menu</span>
+<nav class="mdl-navigation">
+<a class="mdl-navigation__link" href="/settings">Einstellungen</a>
+<a class="mdl-navigation__link" href="/update">Firmware</a></nav></div>
+<main class="mdl-layout__content mdl-color--grey-100">
+<div class="page-content">
+<div class="mdl-grid">
+<div class="mdl-cell mdl-cell--4-col mdl-shadow--4dp mdl-color--white" id="gchart_big"></div>
+<div class="mdl-cell mdl-cell--5-col mdl-shadow--4dp mdl-color--white mdl-cell--bottom" id="gchart_rest"></div>
+<form action="#" id="myform">
+<table class="mdl-data-table  mdl-js-data-table mdl-cell mdl-shadow--6dp"><thead>
+<tr><th>Einstellungen</th><th>Wert</th><th>Slider</th></tr></thead><tbody>
+<tr><td><i class="material-icons">opacity</i> Soll Temperatur:</td>
+<td><div style="width:30px" class="mdl-textfield mdl-js-textfield">
+<input class="mdl-textfield__input" type="text" id="soll" name="Tsoll"></div></td>
+<td><p style="width:400px"><input id="tsoll" class="mdl-slider mdl-js-slider" type="range" min="45" max="100"></p></td></tr>
+<tr><td><i class="material-icons">watch_later</i> T erreicht seit:</td><td></td><td id="timer"></td></tr>
+<tr><td><i class="material-icons">rotate_right</i> Mischer aktiv::</td><td id="MAan"></td>
+<td><p style="width:400px"><input name="Mon" id="sliderAn" class="mdl-slider mdl-js-slider" type="range" min="0" max="20" value="0"></p></td></tr>
+<tr><td><i class="material-icons">replay_30</i> Mischer pausiert:</td><td id="MAaus"></td>
+<td><p style="width:400px"><input name="Moff" id="sliderAus" class="mdl-slider mdl-js-slider" type="range" min="0" max="120" value="0"></p>
+<tr><td><i class="material-icons">toys</i> Mischer Drehzahl:</td><td id="Mpw"></td>
+<td><p style="width:400px"><input name="MPw" id="sliderMpw" class="mdl-slider mdl-js-slider" type="range" min="0" max="100" value="100"></p>
+</td></tr></td></tr></tbody></table></form>
+<div class="mdl-shadow--4dp mdl-color--white mdl-cell mdl-cell--8-col">
+<div id="chart_div"></div></div>
+</div></div></main></div></body></html>
