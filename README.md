@@ -26,6 +26,9 @@ Automatisierung des Maische Kochens mit minimalem Aufwand und lediglich eines ES
 - zur Steuerung des Maische Rührwerks (Scheibenwischermotor) einen Motor Treiber zB. VNH2SP30
 - optional ein Display (LCD I2C 1602).
 
+### Verkabelung
+![Wiring](https://cdn.rawgit.com/tommueller/Brauhelferlein/master/Wiring.svg)
+
 ### Software
 
 - Arduino 1.6.x
