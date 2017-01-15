@@ -39,5 +39,7 @@ Automatisierung des Maische Kochens mit minimalem Aufwand und lediglich eines ES
   - NewLiquidCrystal https://bitbucket.org/fmalpartida/new-liquidcrystal/wiki/Home
   - PID_v1.h
   - ArduinoJson.h
+  - ESPAsyncTCP: https://github.com/me-no-dev/ESPAsyncTCP
+  - ESPAsyncWebServer: https://github.com/me-no-dev/ESPAsyncWebServer
 
 Enjoy your beer! :)
