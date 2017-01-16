@@ -19,6 +19,7 @@
 - Sensorconnection: [XLR Plug female](http://www.lichtundtonversand.de/Steckverbinder-Adapter/XLR-Steckverbinder/XLR-Stecker-3-polig-female-schwarz-Kennring-schwarz.html)
 
 ##MISC
+
 - [4.7k resistor](https://www.conrad.de/de/metallschicht-widerstand-47-k-axial-bedrahtet-0207-06-w-yageo-mf0207fte52-4k7-1-st-1417705.html)
 - [P6KE24CA Diode](https://www.conrad.de/de/tvs-diode-diotec-p6ke24ca-do-15-228-v-600-w-168025.html)
 - terminal strips
