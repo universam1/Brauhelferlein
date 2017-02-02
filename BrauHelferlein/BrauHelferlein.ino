@@ -1,16 +1,16 @@
 #include "ESPAsyncTCP.h"
 #include "ESPAsyncWebServer.h"
-#include <OneWire.h>
-#include <DallasTemperature.h>
+#include "OneWire.h"
+#include "DallasTemperature.h"
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 #include <EEPROM.h>
-#include <PID_v1.h>
+#include "PID_v1.h"
 #include <ArduinoJson.h>
 
 const char* APssid = "Brauhaus";
-const char* STAssid = "uni_5";
-const char* STApassword = "xxxxxx";
+const char* STAssid = "Gastzugang";
+const char* STApassword = "hobbybrauer123";
 
 #define ONE_WIRE_BUS 12  // DS18B20 on ESP pin12
 #define MISCHERPORT 2
@@ -21,6 +21,7 @@ float triggerC = 0.5;
 #define OWinterval (800 / (1 << (12 - resolution))) 
 #define WindowSize (OWinterval * 6)
 #define minWindow 150
+#define ramptime 4 // x ms per % iteration
 
 #define OFF HIGH
 #define ON LOW
@@ -37,10 +38,11 @@ struct StoreStruct{
   double solltemp, consKp, consKi, consKd;
 } myStore;
 
-uint32_t lastrun, lastSetpoint = 0,windowStartTime;
+uint32_t lastrun, lastSetpoint = 0, windowStartTime;
 uint8_t mischerOff = 0;
 uint8_t mischerOn = 0;
-uint16_t mischerPower = 0;
+uint8_t mischerPower = 0, mischerSpeed;
+int8_t load; 
 bool shouldReboot = false;
 double temperature = 25, Output = 0;
 PID myPID(&temperature, &Output, &myStore.solltemp,myStore.consKp,myStore.consKi,myStore.consKd, DIRECT);
@@ -408,6 +410,7 @@ JsonObject& root = jsonBuffer.createObject();
 
     float tnew = DS18B20.getTempCByIndex(0);
     DS18B20.requestTemperatures();
+    yield();
     
     // test if we have valid temp reading
     if (tnew==DEVICE_DISCONNECTED_C || // DISCONNECTED
@@ -453,11 +456,12 @@ JsonObject& root = jsonBuffer.createObject();
       lcd.setCursor(0,1); lcd.print("S:"); lcd.print(buf); lcd.print((char)223);
       root["sollT"] = myStore.solltemp;
 
-      int8_t load = (Output-minWindow)*100.0 / (WindowSize-minWindow);
+      load = (Output-minWindow)*100.0 / (WindowSize-minWindow);
       snprintf (buf, sizeof(buf), "%3u%%", load);
       lcd.setCursor(12,0); 
       lcd.print(buf);
       root["load"] = load;
+      yield();
 
       // We send JSON data to the client
       char buffer[JSONSize];
@@ -474,10 +478,24 @@ JsonObject& root = jsonBuffer.createObject();
   static uint32_t lastmischer;
   if (millis()-lastmischer > 1000) {
     lastmischer = millis();
-    if (mischerOn && (millis() / 1000) % (mischerOn + mischerOff) < mischerOn) {
-      analogWrite(MISCHERPORT, 10.23 * (100-mischerPower)); }
-    else {
-      digitalWrite(MISCHERPORT, true);
-    }
+
+    // reduce off time during heating periods
+    int8_t _off = load < 80 ? mischerOff : mischerOff / 2;
+    
+    if (mischerOn && (millis() / 1000) % (mischerOn + _off) < mischerOn) mischerSpeed = constrain(mischerPower, 0, 100);
+    else mischerSpeed = 0;
+  }
+
+  updateMischerSpeed();
+
+}
+
+void updateMischerSpeed() {
+  static uint32_t lastPowerChg;
+  static uint8_t lastmischerSpeed;
+  if (millis()-lastPowerChg > ramptime){
+    lastPowerChg = millis();
+    if (mischerSpeed > lastmischerSpeed) analogWrite(MISCHERPORT, 10.23 * (100- (++lastmischerSpeed)));
+    else if (mischerSpeed < lastmischerSpeed) analogWrite(MISCHERPORT, 10.23 * (100- (--lastmischerSpeed)));
   }
 }
