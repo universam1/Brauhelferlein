@@ -8,6 +8,7 @@
 - [SSR incl. heatsink](http://www.ebay.de/itm/172371059021)
 - [Power Regulator](http://www.ebay.de/itm/272371025606)
 - [Motorcontroller](http://www.ebay.de/itm/401186167239)
+- [Fan](http://www.ebay.de/itm/1x-Axiallufter-12V-0-12A-60-x-60-x-10-Gehauselufter-Lufter-Ventilator-RG10-1-/262811300673?hash=item3d30c63341:g:IsEAAOSwZQRYfd23)
 
 ##Connectors
 - AC in: [Mounting socket](http://www.lichtundtonversand.de/index.php?cl=details&cnid=c6d49425f2e5652b2.10786974&anid=a8341ff928e486b75.74798722&listtype=list&&sid=2cc820243908881268a1c2d6a009bd78), or better the [16A version](https://www.conrad.de/de/kaltgeraete-steckverbinder-c20-stecker-einbau-vertikal-gesamtpolzahl-2-pe-16-a-schwarz-1-st-717547.html) with [EU cable](http://www.ebay.de/itm/Kolink-Premium-Netzkabel-SchuKo-auf-Kaltgeratestecker-C19-1-8m-/172054514218?hash=item280f3f8a2a:g:NDUAAOSwL7VWlqCx)
