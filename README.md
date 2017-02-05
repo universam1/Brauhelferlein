@@ -14,7 +14,7 @@ Automatisierung des Maische Kochens mit minimalem Aufwand und lediglich eines ES
 
 ### Screenshot
 
-![Screenshot](screenshot.png)
+![Screenshot](docs/screenshot.png)
 
 ## Anleitung
 
@@ -41,5 +41,9 @@ Automatisierung des Maische Kochens mit minimalem Aufwand und lediglich eines ES
   - ArduinoJson.h
   - ESPAsyncTCP: https://github.com/me-no-dev/ESPAsyncTCP
   - ESPAsyncWebServer: https://github.com/me-no-dev/ESPAsyncWebServer
+
+### BOM for project including case
+
+[Case](docs/BOM-Case.md)
 
 Enjoy your beer! :)
