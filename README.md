@@ -27,7 +27,7 @@ Automatisierung des Maische Kochens mit minimalem Aufwand und lediglich eines ES
 - optional ein Display (LCD I2C 1602).
 
 ### Verkabelung
-![Wiring](https://cdn.rawgit.com/tommueller/Brauhelferlein/master/Wiring.svg)
+<img src="https://rawgit.com/universam1/Brauhelferlein/master/docs/Wiring.svg" width="100%" height="300">
 
 ### Software
 
