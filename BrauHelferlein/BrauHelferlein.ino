@@ -145,114 +145,213 @@ void setup(){
   response->addHeader("Server","ESP Async Web Server");
   response->print(R"V0G0N(
 <!DOCTYPE html>
-<html>
+<html lang="de">
+
 <head>
-<title>Braustube</title>
-<link rel="stylesheet" href='https://fonts.googleapis.com/icon?family=Material+Icons'>
-<link rel='stylesheet' href='https://code.getmdl.io/1.2.1/material.light_blue-amber.min.css'>
-<script defer src='https://code.getmdl.io/1.2.1/material.min.js'></script>
-<script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script>
-<script type="text/javascript">
-var chart,gchart, allchart, data, gdata, j, alldata, iv = 1;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Braustube</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
 
-function enEvents() {
-if (!!window.EventSource) {
-var source = new EventSource("/events");
-source.addEventListener("message", function(e) {
-j = JSON.parse(e.data);
-document.getElementById("timer").innerHTML = j.timer;
-gdata.setValue(0, 1, j.temp.toFixed(2));
-alldata.setValue(0, 1, j.sollT.toFixed(2));
-alldata.setValue(1, 1, j.load);
-data.addRow([new Date(), j.temp, j.sollT]);
-while (data.getNumberOfRows() > 1000) data.removeRow(0);
-chart.draw(data, {width: 800,height: 400,vAxis: {scaleType: 'allmaximized',minorGridlines: {count: 5}}});
-gchart.draw(gdata, {width: 300,height: 300,min: 25,max: 100,greenFrom: 63,greenTo: 78,minorTicks: 5});
-allchart.draw(alldata, {width: 500,height: 200,minorTicks: 5});}, false);}}
+    .header,
+    .footer {
+      background-color: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 20px 0;
+    }
 
-function send() {
-var f = document.getElementById("myform"),
-formData = new FormData(f),
-xhr = new XMLHttpRequest();
-xhr.open("POST", "/");
-xhr.send(formData);
-};
+    .nav-link {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
+    }
 
-window.addEventListener ('submit', function (e) {
-e.preventDefault();
-send();
-return false;})
+    .content {
+      padding: 20px;
+      background-color: white;
+      margin: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      flex: 1;
+    }
 
-function chartInit() {
-chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-gchart = new google.visualization.Gauge(document.getElementById('gchart_big'));
-allchart = new google.visualization.Gauge(document.getElementById('gchart_rest'));
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
 
-data = new google.visualization.DataTable();
-data.addColumn('datetime', 'Date');
-data.addColumn('number', 'Temp');
-data.addColumn('number', 'Soll');
+    th,
+    td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
 
-gdata = google.visualization.arrayToDataTable([['Label', 'Value'],['Temp', 80]]);
-alldata = google.visualization.arrayToDataTable([['Label', 'Value'],['Soll', 80],['Power', 30]]);
+    input[type=text],
+    input[type=range] {
+      width: calc(100% - 20px);
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+    }
 
-var an = document.getElementById('sliderAn');
-an.oninput = function() {document.getElementById("MAan").innerHTML = this.value};
+    button {
+      background-color: #3498db;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
 
-var aus = document.getElementById('sliderAus');
-aus.oninput = function() {document.getElementById("MAaus").innerHTML = this.value};
+    button:hover {
+      background-color: #2980b9;
+    }
 
-var ts = document.getElementById('tsoll')
-ts.oninput = function() {document.getElementById("soll").value = this.value}
+    @media (max-width: 768px) {
+      .content {
+        margin: 10px;
+      }
 
-var pw = document.getElementById('sliderMpw')
-pw.oninput = function() {document.getElementById("Mpw").innerHTML = this.value}
+      th,
+      td {
+        display: block;
+        width: 100%;
+      }
 
-var inputs = document.getElementsByClassName("mdl-slider");
-for (var i = 0; i < inputs.length; i++) inputs[i].onchange = send;
-enEvents();
-}
-google.charts.load('current', {'packages': ['corechart', 'gauge']});
-google.charts.setOnLoadCallback(chartInit);
+      input[type=text],
+      input[type=range],
+      button {
+        max-width: 300px;
+        /* Set a max-width */
+        margin: auto;
+        /* Center the elements */
+        display: block;
+        /* Ensure each element takes up its own line */
+      }
 
-</script></head><body>
-<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-<header class="mdl-layout__header">
-<div class="mdl-layout__header-row">
-<span class="mdl-layout-title">Braustube</span>
-<div class="mdl-layout-spacer"></div>
-<nav class="mdl-navigation">
-<a class="mdl-navigation__link" href="/settings">Einstellungen</a>
-<a class="mdl-navigation__link" href="/update">Firmware</a></nav></div></header>
-<div class="mdl-layout__drawer">
-<span class="mdl-layout-title">Menu</span>
-<nav class="mdl-navigation">
-<a class="mdl-navigation__link" href="/settings">Einstellungen</a>
-<a class="mdl-navigation__link" href="/update">Firmware</a></nav></div>
-<main class="mdl-layout__content mdl-color--grey-100">
-<div class="page-content">
-<div class="mdl-grid">
-<div class="mdl-cell mdl-cell--4-col mdl-shadow--4dp mdl-color--white" id="gchart_big"></div>
-<div class="mdl-cell mdl-cell--5-col mdl-shadow--4dp mdl-color--white mdl-cell--bottom" id="gchart_rest"></div>
-<form action="#" id="myform">
-<table class="mdl-data-table  mdl-js-data-table mdl-cell mdl-shadow--6dp"><thead>
-<tr><th>Einstellungen</th><th>Wert</th><th>Slider</th></tr></thead><tbody>
-<tr><td><i class="material-icons">opacity</i> Soll Temperatur:</td>
-<td><div style="width:30px" class="mdl-textfield mdl-js-textfield">
-<input class="mdl-textfield__input" type="text" id="soll" name="Tsoll"></div></td>
-<td><p style="width:400px"><input id="tsoll" class="mdl-slider mdl-js-slider" type="range" min="45" max="100"></p></td></tr>
-<tr><td><i class="material-icons">watch_later</i> T erreicht seit:</td><td></td><td id="timer"></td></tr>
-<tr><td><i class="material-icons">rotate_right</i> Mischer aktiv::</td><td id="MAan"></td>
-<td><p style="width:400px"><input name="Mon" id="sliderAn" class="mdl-slider mdl-js-slider" type="range" min="0" max="20" value="0"></p></td></tr>
-<tr><td><i class="material-icons">replay_30</i> Mischer pausiert:</td><td id="MAaus"></td>
-<td><p style="width:400px"><input name="Moff" id="sliderAus" class="mdl-slider mdl-js-slider" type="range" min="0" max="120" value="0"></p>
-<tr><td><i class="material-icons">toys</i> Mischer Drehzahl:</td><td id="Mpw"></td>
-<td><p style="width:400px"><input name="MPw" id="sliderMpw" class="mdl-slider mdl-js-slider" type="range" min="0" max="100" value="100"></p>
-</td></tr></td></tr></tbody></table></form>
-<div class="mdl-shadow--4dp mdl-color--white mdl-cell mdl-cell--8-col">
-<div id="chart_div"></div></div>
-</div></div></main></div></body></html>
-)V0G0N");
+      td {
+        text-align: center;
+        /* Center text within td on mobile */
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <h1>Brauhelferlein</h1>
+    <a href="/settings" class="nav-link">Einstellungen</a>
+    <a href="/update" class="nav-link">Firmware</a>
+  </div>
+
+  <div class="content">
+    <form action="#" id="myform">
+      <table>
+        <thead>
+          <tr>
+            <th>Einstellungen</th>
+            <th>Wert</th>
+            <th>Slider</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Soll Temperatur:</td>
+            <td><input type="text" id="soll" name="Tsoll" value="45"></td>
+            <td><input id="tsoll" type="range" min="45" max="100" value="62"></td>
+          </tr>
+          <tr>
+            <td>Mischer aktiv:</td>
+            <td><input type="text" id="MAan" name="Mon" value="0"></td>
+            <td><input id="sliderAn" type="range" min="0" max="20" value="7"></td>
+          </tr>
+          <tr>
+            <td>Mischer pausiert:</td>
+            <td><input type="text" id="MAaus" name="Moff" value="0"></td>
+            <td><input id="sliderAus" type="range" min="0" max="120" value="3"></td>
+          </tr>
+          <tr>
+            <td>Mischer Drehzahl:</td>
+            <td><input type="text" id="Mpw" name="MPw" value="100"></td>
+            <td><input id="sliderMpw" type="range" min="0" max="100" value="100"></td>
+          </tr>
+        </tbody>
+      </table>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <script type="text/javascript">
+    function send() {
+      var f = document.getElementById("myform"),
+        formData = new FormData(f),
+        xhr = new XMLHttpRequest();
+      xhr.open("POST", "/");
+      xhr.send(formData);
+    };
+
+    window.addEventListener('submit', function (e) {
+      e.preventDefault();
+      send();
+      return false;
+    });
+
+    function enEvents() {
+      if (!!window.EventSource) {
+        var source = new EventSource("/events");
+        source.addEventListener("message", function (e) {
+          var j = JSON.parse(e.data);
+          document.getElementById("timer").innerHTML = j.timer;
+          document.getElementById("soll").value = j.sollT.toFixed(2);
+          document.getElementById("MAan").innerHTML = j.load;
+          document.getElementById("MAaus").innerHTML = j.load;
+          document.getElementById("Mpw").innerHTML = j.load;
+        }, false);
+      }
+    }
+
+    enEvents();
+
+    function syncInputAndSlider(inputId, sliderId) {
+      var inputElement = document.getElementById(inputId);
+      var sliderElement = document.getElementById(sliderId);
+
+      function updateValue() {
+        if (document.activeElement === inputElement) {
+          sliderElement.value = inputElement.value;
+        } else {
+          inputElement.value = sliderElement.value;
+        }
+      }
+
+      inputElement.addEventListener('input', updateValue);
+      sliderElement.addEventListener('input', updateValue);
+    }
+
+    syncInputAndSlider('soll', 'tsoll');
+    syncInputAndSlider('MAan', 'sliderAn');
+    syncInputAndSlider('MAaus', 'sliderAus');
+    syncInputAndSlider('Mpw', 'sliderMpw');
+  </script>
+
+  <div class="footer">
+    <p>&copy; 2023 github.com/universam1/Brauhelferlein</p>
+  </div>
+</body>
+</html>)V0G0N");
     request->send(response);
   });
 
