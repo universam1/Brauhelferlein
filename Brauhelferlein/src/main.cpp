@@ -29,7 +29,8 @@ float triggerC = 0.5;
 #define JSONSize 150
 
 //                    addr, en,rw,rs,d4,d5,d6,d7
-LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);
+// LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);
+LiquidCrystal_I2C lcd(0x27,20,4);  // set the LCD address to 0x27 for a 16 chars and 2 line display
 
 #define CONFIG_VERSION 1
 #define CONFIG_START 10
@@ -54,6 +55,13 @@ OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature DS18B20(&oneWire);
 DeviceAddress tempDeviceAddress;
 
+void saveConfig() {
+  lcd.clear(); lcd.home(); lcd.print("EE save: ");
+  EEPROM.put(CONFIG_START, myStore);
+  EEPROM.commit();
+  lcd.print("    OK");
+}
+
 void loadConfig() {
   EEPROM.get(CONFIG_START, myStore);
 
@@ -68,11 +76,70 @@ void loadConfig() {
   }
 }
 
-void saveConfig() {
-  lcd.clear(); lcd.home(); lcd.print("EE save: ");
-  EEPROM.put(CONFIG_START, myStore);
-  EEPROM.commit();
-  lcd.print("    OK");
+void updateMischerSpeed() {
+  static uint32_t lastPowerChg;
+  static uint8_t lastmischerSpeed;
+  if (millis()-lastPowerChg > ramptime){
+    lastPowerChg = millis();
+    if (mischerSpeed > lastmischerSpeed) analogWrite(MISCHERPORT, 10.23 * (100- (++lastmischerSpeed)));
+    else if (mischerSpeed < lastmischerSpeed) analogWrite(MISCHERPORT, 10.23 * (100- (--lastmischerSpeed)));
+  }
+}
+
+inline void relais(bool state) {
+  digitalWrite(RELAISPORT,state);
+}
+
+void resetPID() {
+  myPID.SetMode(MANUAL);
+  Output=0;
+  myPID.SetMode(AUTOMATIC);
+}
+
+void WifiStart() {
+  uint8_t i=0;
+
+  lcd.setCursor(0,0); lcd.print("Wifi STA: last");
+  WiFi.begin();
+  //WiFi.setAutoReconnect(true);
+  lcd.setCursor(0,1);
+
+  // We try to connect with the last known AP
+  while (WiFi.status() != WL_CONNECTED)  {
+    delay(500);
+    i++;
+    if (i%15 == 0)  {
+      lcd.setCursor(0,1);
+      lcd.print("                ");
+      lcd.setCursor(0,1);
+    } 
+    else  lcd.print(".");
+
+    // We were unable, so try the hard coded AP
+    if (i == 20) {
+      lcd.clear();
+      lcd.setCursor(0,0);lcd.print("Wifi STA:"); lcd.print(STAssid);
+      WiFi.begin(STAssid,STApassword);
+      lcd.setCursor(0,1);
+    }
+
+    // No APs found, so we spin up own AP
+    // TODO: When in AP mode, we have no Internet, so the JS libraries cant be loaded on the client
+    // can we serve them from ESP?
+    if (i == 40) {
+      lcd.clear();
+      lcd.setCursor(0,0); lcd.print("Wifi AP & STA");
+      WiFi.disconnect();
+      WiFi.mode(WIFI_AP_STA);
+      WiFi.softAP(APssid);
+      delay(2000);
+      lcd.setCursor(0,1);lcd.print("ApIP:");lcd.print(WiFi.softAPIP());
+      break;
+    }
+  }
+  if (WiFi.status() == WL_CONNECTED) {
+    lcd.setCursor(0,1);lcd.print("IP:");lcd.print(WiFi.localIP());
+  }
 }
 
 void setup(){
@@ -436,62 +503,6 @@ kD: <input type='text' name='Kd' value="%.0f" /><br>
   lcd.clear();
 }
 
-inline void relais(bool state) {
-  digitalWrite(RELAISPORT,state);
-}
-
-void resetPID() {
-  myPID.SetMode(MANUAL);
-  Output=0;
-  myPID.SetMode(AUTOMATIC);
-}
-
-void WifiStart() {
-  uint8_t i=0;
-
-  lcd.setCursor(0,0); lcd.print("Wifi STA: last");
-  WiFi.begin();
-  //WiFi.setAutoReconnect(true);
-  lcd.setCursor(0,1);
-
-  // We try to connect with the last known AP
-  while (WiFi.status() != WL_CONNECTED)  {
-    delay(500);
-    i++;
-    if (i%15 == 0)  {
-      lcd.setCursor(0,1);
-      lcd.print("                ");
-      lcd.setCursor(0,1);
-    } 
-    else  lcd.print(".");
-
-    // We were unable, so try the hard coded AP
-    if (i == 20) {
-      lcd.clear();
-      lcd.setCursor(0,0);lcd.print("Wifi STA:"); lcd.print(STAssid);
-      WiFi.begin(STAssid,STApassword);
-      lcd.setCursor(0,1);
-    }
-
-    // No APs found, so we spin up own AP
-    // TODO: When in AP mode, we have no Internet, so the JS libraries cant be loaded on the client
-    // can we serve them from ESP?
-    if (i == 40) {
-      lcd.clear();
-      lcd.setCursor(0,0); lcd.print("Wifi AP & STA");
-      WiFi.disconnect();
-      WiFi.mode(WIFI_AP_STA);
-      WiFi.softAP(APssid);
-      delay(2000);
-      lcd.setCursor(0,1);lcd.print("ApIP:");lcd.print(WiFi.softAPIP());
-      break;
-    }
-  }
-  if (WiFi.status() == WL_CONNECTED) {
-    lcd.setCursor(0,1);lcd.print("IP:");lcd.print(WiFi.localIP());
-  }
-}
-
 void loop(){
   
 StaticJsonBuffer<JSONSize> jsonBuffer;
@@ -589,12 +600,3 @@ JsonObject& root = jsonBuffer.createObject();
 
 }
 
-void updateMischerSpeed() {
-  static uint32_t lastPowerChg;
-  static uint8_t lastmischerSpeed;
-  if (millis()-lastPowerChg > ramptime){
-    lastPowerChg = millis();
-    if (mischerSpeed > lastmischerSpeed) analogWrite(MISCHERPORT, 10.23 * (100- (++lastmischerSpeed)));
-    else if (mischerSpeed < lastmischerSpeed) analogWrite(MISCHERPORT, 10.23 * (100- (--lastmischerSpeed)));
-  }
-}
